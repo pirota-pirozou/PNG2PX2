@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
 	if (!outfilename[0])
 	{
 		// 出力ファイルネーム
-		sprintf(outfilename, fname);
+		strcpy(outfilename, fname);
 	}
 
 	_splitpath(outfilename, drive, dir, fname, ext);
