@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.4.33205.214
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PNG2PX2", "PNG2PX2.vcxproj", "{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Debug|x64.ActiveCfg = Debug|x64
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Debug|x64.Build.0 = Debug|x64
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Debug|x86.ActiveCfg = Debug|Win32
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Debug|x86.Build.0 = Debug|Win32
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Release|x64.ActiveCfg = Release|x64
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Release|x64.Build.0 = Release|x64
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Release|x86.ActiveCfg = Release|Win32
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {BB8E7E60-FB95-4211-8AA3-9BF5A5CD0FBA}
+	EndGlobalSection
+EndGlobal
