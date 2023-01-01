@@ -15,21 +15,37 @@ extern "C" {
 typedef LPBITMAPINFOHEADER		PDIB;
 #endif
 
-/*
-//
-typedef unsigned char u_char;
-typedef unsigned short u_short;
-typedef unsigned long u_long;
 
-typedef unsigned char BYTE;
-typedef unsigned short WORD;
-typedef unsigned long DWORD;
-*/
+#define COLOR_TYPE_INDEX 0   // インデックスカラー
+
+typedef struct {
+    unsigned char r;        // Red
+    unsigned char g;        // Green
+    unsigned char b;        // Blue
+    unsigned char a;        // Alpha
+} color_t;
+
+typedef struct
+{
+    int width;         // 幅
+    int height;        // 高さ
+    unsigned short color_type;  // 色表現の種別
+    unsigned short palette_num; // カラーパレットの数
+    color_t *palette;           // カラーパレットへのポインタ
+    unsigned char ** map;       // 画像データ
+} IMAGEDATA;
 
 #define DibPtr(lpbi)            ((lpbi)->biCompression == BI_BITFIELDS \
                                    ? (LPVOID)(DibColors(lpbi) + 3) \
                                    : (LPVOID)(DibColors(lpbi) + (UINT)(lpbi)->biClrUsed))
 #define DibColors(lpbi)         ((RGBQUAD FAR *)((LPBYTE)(lpbi) + (int)(lpbi)->biSize))
+
+unsigned char** alloc_map(IMAGEDATA* img);
+void free_map(IMAGEDATA* img);
+
+
+int writepng(const char* filename, IMAGEDATA* img);
+int write_png_stream(FILE* fp, IMAGEDATA* img);
 
 
 PDIB pngptr2dib(void *pptr);

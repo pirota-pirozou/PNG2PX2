@@ -271,8 +271,7 @@ static int readjob(void)
 static int cvjob(void)
 {
 	BITMAPINFOHEADER *bi;
-	int xl,yl;
-	int a;
+	size_t a;
 	u_char *pimg;
 	u_char *outptr;
 	u_char* atrptr;
@@ -285,17 +284,15 @@ static int cvjob(void)
 	atrptr = (u_char*)outbuf + 1;									// アトリビュート出力バッファ
 
 	pimg = NULL;
-	int aval = 0;
-	for (yl=0; yl<height; yl+=16)
+	for (int yl=0; yl<height; yl+=16)
 	{
-		for (xl=0; xl<width; xl+=8)
+		for (int xl=0; xl<width; xl+=8)
 		{
 			if ((xl & 15) == 0)
 			{
 				// アトリビュート書き込み
 				pimg = (u_char*)dibbuf + (sizeof(BITMAPINFOHEADER) + sizeof(RGBQUAD) * bi->biClrUsed) + (yl * width) + xl;
 				*atrptr = (((*pimg) & 0xF0) >> 4); // エンディアン考慮
-//				*atrptr = 1; // エンディアン考慮
 				atrptr += 2;
 			}
 			// ピクセル変換
@@ -315,7 +312,7 @@ static int cvjob(void)
 
 	// パレット変換
 	RGBQUAD * dibpal = (RGBQUAD *)((u_char *) dibbuf + sizeof(BITMAPINFOHEADER));
-	// GGG_RRR_BBB_I
+	// GGGGG_RRRRR_BBBBB_I
 	for (int i=0; i<256; i++)
 	{
 		RGBQUAD* paltmp = &dibpal[i];

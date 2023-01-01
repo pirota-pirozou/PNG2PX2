@@ -40,6 +40,157 @@ extern "C" {
 		pngstream_ptr = (unsigned char *)pptr;
 	}
 
+	// ビットマップ2次元配列確保
+	unsigned char ** alloc_map(IMAGEDATA* img)
+	{
+		int width = img->width;
+		int height = img->height;
+
+		img->map = malloc(sizeof(unsigned char*) * height);
+		if (img->map == NULL)
+		{
+			return NULL;
+		}
+
+		for (int i = 0; i < height; i++)
+		{
+			img->map[i] = malloc(sizeof(unsigned char) * width);
+			if (img->map[i] == NULL)
+			{
+				return NULL;
+			}
+		}
+
+		return img->map;
+	}
+
+	// ビットマップ2次元配列解放
+	void free_map(IMAGEDATA* img)
+	{
+		int height = img->height;
+		if (img->map != NULL)
+		{
+			for (int i = 0; i < height; i++)
+			{
+				free(img->map[i]);
+				img->map[i] = NULL;
+			}
+			free(img->map);
+			img->map = NULL;
+		}
+
+	}
+
+	// pngを書き込み（インデックスカラー専用）
+	int writepng(const char *filename, IMAGEDATA *img)
+	{
+		int result = -1;
+		if (img == NULL) {
+			return result;
+		}
+		FILE* fp = fopen(filename, "wb");
+		if (fp == NULL) {
+			perror(filename);
+			return result;
+		}
+		result = write_png_stream(fp, img);
+		fclose(fp);
+
+		return 0;
+	}
+
+	// ビットマップとパレットをpngとしてセーブ
+	int write_png_stream(FILE* fp, IMAGEDATA *img)
+	{
+		int i, x, y;
+		int result = -1;
+		int row_size;
+		int color_type;
+		png_structp png = NULL;
+		png_infop info = NULL;
+		png_bytep row;
+		png_bytepp rows = NULL;
+		png_colorp palette = NULL;
+		if (img == NULL) {
+			return result;
+		}
+		switch (img->color_type) {
+		case COLOR_TYPE_INDEX:  // インデックスカラー
+			color_type = PNG_COLOR_TYPE_PALETTE;
+			row_size = sizeof(png_byte) * img->width;
+			break;
+		default:
+			return result;
+		}
+		png = png_create_write_struct(PNG_LIBPNG_VER_STRING, NULL, NULL, NULL);
+		if (png == NULL) {
+			goto error;
+		}
+		info = png_create_info_struct(png);
+		if (info == NULL) {
+			goto error;
+		}
+		if (setjmp(png_jmpbuf(png))) {
+			goto error;
+		}
+		png_init_io(png, fp);
+		png_set_IHDR(png, info, img->width, img->height, 8,
+			color_type, PNG_INTERLACE_NONE, PNG_COMPRESSION_TYPE_DEFAULT,
+			PNG_FILTER_TYPE_DEFAULT);
+		rows = png_malloc(png, sizeof(png_bytep) * img->height);
+		if (rows == NULL) {
+			goto error;
+		}
+		png_set_rows(png, info, rows);
+		memset(rows, 0, sizeof(png_bytep) * img->height);
+		for (y = 0; y < img->height; y++) {
+			if ((rows[y] = png_malloc(png, row_size)) == NULL) {
+				goto error;
+			}
+		}
+		switch (img->color_type) {
+		case COLOR_TYPE_INDEX:  // インデックスカラー
+			palette = png_malloc(png, sizeof(png_color) * img->palette_num);
+			for (i = 0; i < img->palette_num; i++) {
+				palette[i].red = img->palette[i].r;
+				palette[i].green = img->palette[i].g;
+				palette[i].blue = img->palette[i].b;
+			}
+			png_set_PLTE(png, info, palette, img->palette_num);
+			for (i = img->palette_num - 1; i >= 0 && img->palette[i].a != 0xFF; i--);
+			if (i >= 0) {
+				int num_trans = i + 1;
+//				png_byte trans[255];
+				png_byte trans[256];
+				for (i = 0; i < num_trans; i++) {
+					trans[i] = img->palette[i].a;
+				}
+				png_set_tRNS(png, info, trans, num_trans, NULL);
+			}
+			png_free(png, palette);
+			for (y = 0; y < img->height; y++) {
+				row = rows[y];
+				for (x = 0; x < img->width; x++) {
+					*row++ = img->map[y][x];
+				}
+			}
+			break;
+
+		default:;
+		}
+		png_write_png(png, info, PNG_TRANSFORM_IDENTITY, NULL);
+		result = 0;
+	error:
+		if (rows != NULL) {
+			for (y = 0; y < img->height; y++) {
+				png_free(png, rows[y]);
+			}
+			png_free(png, rows);
+		}
+		png_destroy_write_struct(&png, &info);
+		return result;
+	}
+
 	// pngを開きDIBに変換
 	PDIB pngptr2dib(void *pptr)
 	{
