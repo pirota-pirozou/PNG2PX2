@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 	memset(patfilename, 0, sizeof(patfilename) );
 	memset(palfilename, 0, sizeof(palfilename) );
 
-    printf("PNG to PX2 Converter Ver0.1 " __DATE__ "," __TIME__ " Programmed by Pirota\n");
+    printf("PNG to PX2 Converter Ver0.11 " __DATE__ "," __TIME__ " Programmed by Pirota\n");
 
     if (argc <= 1)
 	{

@@ -294,6 +294,12 @@ extern "C" {
 			ulRowBytes += adj * ulUnitBytes;
 		}
 
+		// 16色(Packed)の場合にパッチする
+		if (ulUnitBytes == 0)
+		{
+			ulRowBytes *= 2;
+		}
+
 		// 確保サイズ
 		alc_sz = sizeof(png_byte)* ulRowBytes * height + sizeof(BITMAPINFOHEADER) +
 			sizeof(RGBQUAD)* num_pal;
@@ -302,7 +308,7 @@ extern "C" {
 		dib_ptr = (LPBITMAPINFO)malloc(alc_sz);
 
 		// BITMAPINFOHEADER をクリア
-		ZeroMemory(dib_ptr, sizeof(BITMAPINFOHEADER));
+		memset(dib_ptr, 0, sizeof(BITMAPINFOHEADER));
 
 		// 透過色チェック
 		png_trans_num = 0;
@@ -350,16 +356,44 @@ extern "C" {
 			}
 		}
 
-
 		// 展開ポインタ配列を確保
 		image = (png_bytepp)malloc(height * sizeof(png_bytep));
 
-		for (i = 0; i < height; i++) {
-			//        image[height-i-1] = (png_bytep) dibp + (i * ulRowBytes);
-			image[i] = (png_bytep)dibp + (i * ulRowBytes);
+		// 16色(Packed)以外の場合（通常）
+		if (ulUnitBytes != 0)
+		{
+			for (i = 0; i < height; i++) {
+				image[i] = (png_bytep)dibp + (i * ulRowBytes);
+			}
+			png_read_image(png_ptr, image);							// 画像データの展開
 		}
-		png_read_image(png_ptr, image);							// 画像データの展開
+		else
+		{
+			// 16色(Packed)の場合
+			png_bytep* imagetmp = (png_bytepp)malloc(height * width / 2);
 
+			for (i = 0; i < height; i++) {
+				image[i] = (png_bytep)imagetmp + (i * (width / 2));
+			}
+			png_read_image(png_ptr, image);							// 画像データの展開
+
+			// 4bit → 8bit展開
+			unsigned char* dest;
+			for (int y = 0; y < height; y++)
+			{
+				png_bytep ptr = image[y];
+				dest = (png_bytep)dibp + (y * ulRowBytes);
+				for (int x = 0; x < width; x += 2)
+				{
+					png_byte c = *ptr;
+					*dest = (c >> 4);
+					*(dest+1) = (c & 0x0F);
+					ptr++;
+					dest += 2;
+				}
+			}
+			free(imagetmp);
+		}
 		free(image);
 
 		png_destroy_read_struct(								// libpng構造体のメモリ解放
