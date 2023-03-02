@@ -1,9 +1,3 @@
-#pragma once
-
-#ifndef __PNGCTRL_H__
-#define __PNGCTRL_H__
-
-
 #include	<windows.h>
 #include	<stdlib.h>
 #include	<stdio.h>
@@ -334,12 +328,14 @@ extern "C" {
 		if (dib_ptr->bmiHeader.biCompression != BI_BITFIELDS)
 		{
 			pcolors = (RGBQUAD *)dibp;                                     /* RGBQUADへのポインタ */
-			(unsigned char *)dibp += sizeof(RGBQUAD) * dib_ptr->bmiHeader.biClrUsed;
+//			(unsigned char *)dibp += sizeof(RGBQUAD) * dib_ptr->bmiHeader.biClrUsed;
+			dibp = (void*)((unsigned char*) dibp + (sizeof(RGBQUAD) * dib_ptr->bmiHeader.biClrUsed));
 		}
 		else
 		{
 			pcolors = NULL;
-			(unsigned char*)dibp += 3;
+//			(unsigned char*)dibp += 3;
+			dibp = (void*)((unsigned char*)dibp + 3);
 		}
 
 		// パレットコピー
@@ -363,7 +359,7 @@ extern "C" {
 		if (ulUnitBytes != 0)
 		{
 			for (i = 0; i < height; i++) {
-				image[i] = (png_bytep)dibp + (i * ulRowBytes);
+				image[i] = (png_bytep)(dibp + (i * ulRowBytes));
 			}
 			png_read_image(png_ptr, image);							// 画像データの展開
 		}
@@ -496,7 +492,3 @@ extern "C" {
 #ifdef __cplusplus
 }	// extern "C"
 #endif
-
-
-
-#endif // __PNGCTRL_H__

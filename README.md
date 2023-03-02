@@ -1,6 +1,6 @@
 # PNG2PX2.c / PX22PNG.c
 
-Version 0.1
+Version 0.1a
 
 ## PNG2PX2 for Windows
 
@@ -45,6 +45,10 @@ EDGEなどのドット絵ツールを使って作成すると良いでしょう�
 ### 使用法
 
 px22png filename[.px2]
+
+### 更新履歴
+
+- Ver0.1a - gccでpngctrl.c のコンパイルが通るように修正しました。
 
 ---
 

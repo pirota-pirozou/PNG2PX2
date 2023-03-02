@@ -71,7 +71,7 @@ int main(int argc, char *argv[])
 	memset(infilename, 0, sizeof(infilename) );
 	memset(outfilename, 0, sizeof(outfilename) );
 
-    printf("PX2 to PNG Converter Ver0.1 " __DATE__ "," __TIME__ " Programmed by Pirota\n");
+    printf("PX2 to PNG Converter Ver0.1a " __DATE__ "," __TIME__ " Programmed by Pirota\n");
 
     if (argc <= 1)
 	{
