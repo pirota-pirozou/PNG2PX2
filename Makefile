@@ -1,21 +1,19 @@
-#
 CC = gcc
-CFLAGS = -Wall -O2
+CFLAGS = -Wall -Os
 LDFLAGS = -lz -lpng
 LIBS =
 INCLUDE = -I./
 TARGET = $(notdir $(CURDIR))
 SRCDIR = ./
 OBJDIR = ./obj
-ifeq "$(strip $(OBJDIR))" ""
-  OBJDIR = .
+
+ifeq ($(strip $(OBJDIR)),)
+OBJDIR = .
 endif
 
 .PHONY: clean
 
 all: ./PX22PNG.exe ./PNG2PX2.exe
-
-#TARGET1 =
 
 SOURCES = $(wildcard $(SRCDIR)/*.c)
 OBJECTS1 = $(addprefix $(OBJDIR)/, PNG2PX2.o pngctrl.o)
@@ -29,13 +27,11 @@ PNG2PX2.exe: $(OBJECTS1) $(LIBS)
 PX22PNG.exe: $(OBJECTS2) $(LIBS)
 	$(CC) -o $@ $^ $(LDFLAGS)
 
-
 $(OBJDIR)/%.o: $(SRCDIR)/%.c
 	@[ -d $(OBJDIR) ] || mkdir -p $(OBJDIR)
 	$(CC) $(CFLAGS) $(INCLUDE) -o $@ -c $<
 
-#
 clean:
 	rm -f $(OBJECTS1) $(OBJECT2) $(DEPENDS) $(DEPENDS2)
 
--include
+# DO NOT DELETE THIS LINE – make depend depends on it.
