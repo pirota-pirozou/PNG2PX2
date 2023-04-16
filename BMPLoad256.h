@@ -21,9 +21,14 @@ typedef unsigned int DWORD_t;
 typedef unsigned char BYTE_t;
 
 #define BI_RGB  0L
+#define BI_BITFIELDS 3L
+
+typedef const char * LPSTR;
+typedef unsigned char u_char;
 
 /// @brief ビットマップファイルヘッダー
-typedef struct {
+typedef struct
+{
     WORD_t bfType;
     DWORD_t bfSize;
     WORD_t bfReserved1;
@@ -32,7 +37,8 @@ typedef struct {
 } BITMAPFILEHEADER, *LPBITMAPFILEHEADER;
 
 /// @brief ビットマップ情報ヘッダー
-typedef struct {
+typedef struct
+{
     DWORD_t biSize;
     DWORD_t biWidth;
     DWORD_t biHeight;
@@ -47,7 +53,8 @@ typedef struct {
 } BITMAPINFOHEADER, *LPBITMAPINFOHEADER;
 
 /// @brief カラーパレット
-typedef struct {
+typedef struct
+{
     BYTE_t rgbBlue;
     BYTE_t rgbGreen;
     BYTE_t rgbRed;
@@ -55,14 +62,11 @@ typedef struct {
 } RGBQUAD, *LPRGBQUAD;
 
 /// @brief ビットマップ情報
-typedef struct tagBITMAPINFO {
+typedef struct _tagBITMAPINFO
+{
   BITMAPINFOHEADER bmiHeader;
   RGBQUAD          bmiColors[1];
 } BITMAPINFO, *LPBITMAPINFO, *PBITMAPINFO;
-
-typedef const char * LPSTR;
-
-typedef unsigned char u_char;
 
 #ifdef __cplusplus
 extern "C" {

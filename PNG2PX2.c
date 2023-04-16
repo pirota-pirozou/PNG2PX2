@@ -185,7 +185,11 @@ int main(int argc, char *argv[])
 		strcpy(outfilename, fname);
 	}
 
+#ifdef __WIN32__	
 	_splitpath(outfilename, drive, dir, fname, ext);
+#else
+	my_splitpath(outfilename, drive, dir, fname, ext);
+#endif
 	if (ext[0] == 0)
 		strcat(outfilename, OUTFILE_EXT);							// Šg’£Žq•âŠ®
 
