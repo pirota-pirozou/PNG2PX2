@@ -5,16 +5,35 @@
 // programmed by pirota
 /////////////////////////////////////////////////////////////////////////////
 
-#include <windows.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#ifdef __APPLE__
+#include <libgen.h>
+#endif
+#include "BMPLoad256.h"
 
 #include "png.h"
 #include "pngctrl.h"
 
 #define INFILE_EXT  ".PX2"
 #define OUTFILE_EXT ".png"
+
+#ifndef _MAX_PATH
+#define _MAX_PATH   256
+#endif
+#ifndef _MAX_DRIVE
+#define _MAX_DRIVE  3
+#endif
+#ifndef _MAX_DIR
+#define _MAX_DIR	256
+#endif
+#ifndef _MAX_FNAME
+#define _MAX_FNAME	256
+#endif
+#ifndef _MAX_EXT
+#define _MAX_EXT	256
+#endif
 
 // PX2ファイル構造体
 typedef struct
@@ -53,6 +72,33 @@ static void usage(void)
 
     exit(0);
 }
+
+#ifndef __WIN32__
+void my_splitpath(char* filename, char* drive, char *dir, char *fname, char *ext)
+{
+	// ファイル名のパスを取得
+	char *path_copy = strdup(filename);
+	drive[0] = '\0';
+	strcpy(dir, dirname(path_copy));
+	char *_drive = dirname(path_copy);
+	char *file_copy = strdup(filename);
+	char *filename_ext = basename(file_copy);
+	char *p = dirname(filename);
+	// Split filename and extension
+	char *dot = strrchr(filename_ext, '.');
+	if (dot)
+	{
+		strncpy(fname, filename_ext, dot - filename_ext);
+		fname[dot - filename_ext] = '\0';
+		strcpy(ext, dot);
+	}
+	else
+	{
+		strcpy(fname, filename_ext);
+		ext[0] = '\0';
+	}	
+}
+#endif
 
 /////////////////////////////////////
 // main
@@ -101,7 +147,11 @@ int main(int argc, char *argv[])
 		if (!infilename[0])
 		{
 			strcpy(infilename, argv[i]);
+#ifndef __WIN32__
+			my_splitpath(infilename , drive, dir, fname, ext );
+#else
 			_splitpath(infilename , drive, dir, fname, ext );
+#endif			
 			if (ext[0]==0)
 				strcat(infilename, INFILE_EXT);							// 拡張子補完
 
@@ -123,7 +173,11 @@ int main(int argc, char *argv[])
 		strcpy(outfilename, fname);
 	}
 
+#ifndef __WIN32__
+	my_splitpath(outfilename , drive, dir, fname, ext );
+#else	
 	_splitpath(outfilename, drive, dir, fname, ext);
+#endif	
 	if (ext[0] == 0)
 		strcat(outfilename, OUTFILE_EXT);							// 拡張子補完
 
