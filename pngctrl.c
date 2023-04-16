@@ -1,8 +1,9 @@
-#include	<windows.h>
+//#include	<windows.h>
 #include	<stdlib.h>
 #include	<stdio.h>
 #include	<string.h>
 
+#include	"BMPLoad256.h"
 #include	"png.h"
 #include	"pngctrl.h"
 

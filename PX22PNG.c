@@ -59,7 +59,6 @@ static int height;
 static int opt_d = 0;													// デバッグオプション
 
 
-static int getfilesize(char *);
 static int readjob(void);
 static int cvjob(void);
 
@@ -244,26 +243,6 @@ cvEnd:
 	}
 
 	return main_result;
-}
-
-//----------------------
-// ファイルサイズを取得
-//----------------------
-static int getfilesize(char *fname)
-{
-    int result = -1;
-    FILE * fp;
-
-    fp = fopen(fname, "rb");
-    if (fp == NULL)
-        return result;
-
-    fseek(fp, 0, SEEK_END);
-    result = ftell(fp);
-    fseek(fp, 0, SEEK_SET);
-    fclose(fp);
-
-    return result;
 }
 
 //----------------------------
