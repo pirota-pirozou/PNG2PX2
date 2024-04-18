@@ -9,24 +9,34 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "PX22PNG", "PX22PNG.vcxproj"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM64 = Debug|ARM64
 		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|ARM64 = Release|ARM64
 		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Debug|ARM64.Build.0 = Debug|ARM64
 		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Debug|x64.ActiveCfg = Debug|x64
 		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Debug|x64.Build.0 = Debug|x64
 		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Debug|x86.ActiveCfg = Debug|Win32
 		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Debug|x86.Build.0 = Debug|Win32
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Release|ARM64.ActiveCfg = Release|ARM64
+		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Release|ARM64.Build.0 = Release|ARM64
 		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Release|x64.ActiveCfg = Release|x64
 		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Release|x64.Build.0 = Release|x64
 		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Release|x86.ActiveCfg = Release|Win32
 		{DCF6EBA3-4A99-48CE-B6F8-B684B7246BC9}.Release|x86.Build.0 = Release|Win32
+		{DC01227D-519E-4553-9C17-1E5FECBB4616}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{DC01227D-519E-4553-9C17-1E5FECBB4616}.Debug|ARM64.Build.0 = Debug|ARM64
 		{DC01227D-519E-4553-9C17-1E5FECBB4616}.Debug|x64.ActiveCfg = Debug|x64
 		{DC01227D-519E-4553-9C17-1E5FECBB4616}.Debug|x64.Build.0 = Debug|x64
 		{DC01227D-519E-4553-9C17-1E5FECBB4616}.Debug|x86.ActiveCfg = Debug|Win32
 		{DC01227D-519E-4553-9C17-1E5FECBB4616}.Debug|x86.Build.0 = Debug|Win32
+		{DC01227D-519E-4553-9C17-1E5FECBB4616}.Release|ARM64.ActiveCfg = Release|ARM64
+		{DC01227D-519E-4553-9C17-1E5FECBB4616}.Release|ARM64.Build.0 = Release|ARM64
 		{DC01227D-519E-4553-9C17-1E5FECBB4616}.Release|x64.ActiveCfg = Release|x64
 		{DC01227D-519E-4553-9C17-1E5FECBB4616}.Release|x64.Build.0 = Release|x64
 		{DC01227D-519E-4553-9C17-1E5FECBB4616}.Release|x86.ActiveCfg = Release|Win32
